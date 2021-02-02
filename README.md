@@ -12,11 +12,13 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 __STEP 1__
 
-Login to your AWS Console, select RDS and Create Database
+*Login to your AWS Console, select RDS and Create Database*
+
 ![](one.PNG)
 
 __STEP 2__
 
+*
 ![](./two.png)
 
 ## Preparing your local Ubuntu instance
