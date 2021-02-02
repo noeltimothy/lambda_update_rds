@@ -44,6 +44,11 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 ![](six.PNG)
 
+<hr>
+
+*Adjust your Security Group to allow incoming traffic on port 5432*
+
+![](inbound.PNG)
 
 ## Create an IAM Role to be used by our Lambda function
 
