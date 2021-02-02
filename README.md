@@ -45,6 +45,16 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 ![](six.PNG)
 
 
+## Create an IAM Role to be used by our Lambda function
+
+The IAM Role needs to have full access to:
+    - S3
+    - RDS
+
+Note the ARN since, we will need to use this later when deploying the Lambda function from the AWS CLI
+
+![](iamrole.PNG)
+
 ## Preparing your local Ubuntu instance
 
 We use a local Ubuntu instance to do the following:
@@ -58,11 +68,31 @@ $sudo apt-get update && install -y python3-pip postgresql-client awscli
 # Copy your AWS client ID and Secret to ~/.aws/credentials
 ```
 
-#### Setup your RDS table with the required fields
+#### Run AWS configure to set your region
+
+AWS configure automatically picks up your keys from ~/.aws/credentials. You just need to set the region when it prompts you to.
+For example, we set it here to us-east-1, this is where we had created our RDS database too.
+
+```
+$sudo aws configure
+Default region name [None]:us-east-1
+```
+
+## Create an S3 bucket and copy your CSV file
+
+```
+$sudo aws mb s3://mytest-bucket
+$sudo aws cp Data.csv s3://mytest-bucket
+```
+
+## Create your RDS table with the required fields
 
 ```
 $psql -h prod.xxxxxxx.amazonaws.com -U postgres
-postgres=> CREATE TABLE Tasks (TaskID serial primary key, VIN varchar(17), HoldNumber varchar(255), Description varchar(255), Location varchar(255), Bay varchar(255), DateTime TIMESTAMPTZ, UserName varchar(255), VehicleScan boolean, VehicleScanLink varchar(255), Issue varchar(255));
+postgres=> CREATE TABLE Tasks (TaskID serial primary key, VIN varchar(17), 
+HoldNumber varchar(255), Description varchar(255), Location varchar(255), 
+Bay varchar(255), DateTime TIMESTAMPTZ, UserName varchar(255), 
+VehicleScan boolean, VehicleScanLink varchar(255), Issue varchar(255));
 postgres=> \d
                 List of relations
  Schema |       Name       |   Type   |  Owner
@@ -70,16 +100,23 @@ postgres=> \d
  public | tasks            | table    | postgres
 ```
 
-#### Run AWS configure to set your region
-
-AWS configure automatically picks up your keys from ~/.aws/credentials. You just need to set the region when it prompts you to.
-For example, we set it here to us-east-1, this is where we had created our RDS database too.
+## Create and package your Lambda function
 
 ```
-$aws configure
-Default region name [None]:us-east-1
+$mkdir lambda
+
+#Your app.py will be the main file and it should have an entry point handler defined as follows:
+def lambda_handler(event, context):
+...
+...
+
+# We don't use pymysql since it hangs or times out during connect
+# Also, pip3 install psycopg2 does not build right for lambda
+# We use psycopg2 from https://github.com/jkehler/awslambda-psycopg2
+# copy the psycopg2-3.6 directory from the above repo and rename it as psycopg2
+
+$wget https://github.com/jkehler/awslambda-psycopg2/tree/master/psycopg2-3.6
+$mv psycopg2-3.6 psycopg2
+
 ```
-
-
-
 
