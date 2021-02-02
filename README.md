@@ -40,7 +40,7 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 <hr>
 
-*Done! Once the databases are up, you can access them using their endpoint name.
+*Done! Once the databases are up, you can access them using their endpoint name*
 
 ![](six.PNG)
 
