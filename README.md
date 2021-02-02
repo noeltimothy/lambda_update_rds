@@ -121,7 +121,8 @@ $mv psycopg2-3.6 psycopg2
 $zip -r csv_to_rds.zip *
 
 # Create and call the AWS create-function with the IAM Role
-$sudo aws lambda create-function --function-name csv-to-rds --zip-file fileb://csv_to_rds.zip --role arn:aws:iam::937915778673:role/mylambda-role --handler app.lambda_handler --runtime python3.6
+$sudo aws lambda create-function --function-name csv-to-rds --zip-file fileb://csv_to_rds.zip \
+--role arn:aws:iam::937915778673:role/mylambda-role --handler app.lambda_handler --runtime python3.6
 $sudo aws lambda invoke --invocation-type RequestResponse --function-name csv-to-rds outfile
 
 ```
