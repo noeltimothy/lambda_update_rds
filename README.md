@@ -48,8 +48,8 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 ## Create an IAM Role to be used by our Lambda function
 
 The IAM Role needs to have full access to:
-    - S3
-    - RDS
+- S3
+- RDS
 
 Note the ARN since, we will need to use this later when deploying the Lambda function from the AWS CLI
 
@@ -78,14 +78,14 @@ $sudo aws configure
 Default region name [None]:us-east-1
 ```
 
-## Create an S3 bucket and copy your CSV file
+## On your Ubuntu Instance: Create an S3 bucket and copy your CSV file
 
 ```
 $sudo aws mb s3://mytest-bucket
 $sudo aws cp Data.csv s3://mytest-bucket
 ```
 
-## Create your RDS table with the required fields
+## On your Ubuntu Instance: Create your AWS RDS table with the required fields
 
 ```
 $psql -h prod.xxxxxxx.amazonaws.com -U postgres
@@ -100,15 +100,16 @@ postgres=> \d
  public | tasks            | table    | postgres
 ```
 
-## Create and package your Lambda function
+## On your Ubuntu Instance: Create and package your Lambda function
 
 ```
 $mkdir lambda
+$cd lambda
 
 #Your app.py will be the main file and it should have an entry point handler defined as follows:
 def lambda_handler(event, context):
-...
-...
+    ...
+    ...
 
 # We don't use pymysql since it hangs or times out during connect
 # Also, pip3 install psycopg2 does not build right for lambda
@@ -117,6 +118,11 @@ def lambda_handler(event, context):
 
 $wget https://github.com/jkehler/awslambda-psycopg2/tree/master/psycopg2-3.6
 $mv psycopg2-3.6 psycopg2
+$zip -r csv_to_rds.zip *
+
+# Create and call the AWS create-function with the IAM Role
+$sudo aws lambda create-function --function-name csv-to-rds --zip-file fileb://csv_to_rds.zip --role arn:aws:iam::937915778673:role/mylambda-role --handler app.lambda_handler --runtime python3.6
+$sudo aws lambda invoke --invocation-type RequestResponse --function-name csv-to-rds outfile
 
 ```
 
