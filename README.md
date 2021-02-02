@@ -14,6 +14,7 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 ![](one.PNG)
 
+<hr>
 *Choose the Standard Create option and select Amazon Aurora along with PostgreSQL compatibility*
 
 ![](two.PNG)
@@ -26,7 +27,7 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 ![](four.PNG)
 
-*Under Additional Configuration, create your database name
+*Under Additional Configuration, create your database name*
 
 ![](five.PNG)
 
