@@ -100,7 +100,7 @@ postgres=> \d
  public | tasks            | table    | postgres
 ```
 
-## On your Ubuntu Instance: Create and package your Lambda function
+## On your Ubuntu Instance: Package & Deploy your Lambda function
 
 ```
 $mkdir lambda
