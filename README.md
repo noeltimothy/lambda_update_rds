@@ -47,8 +47,39 @@ AWS Lambda function that updates a Postgresql RDS using CSV data from a S3 bucke
 
 ## Preparing your local Ubuntu instance
 
-We use a lical Ubuntu instance to do the following:
+We use a local Ubuntu instance to do the following:
     - To package your Lambda function
     - To connect to remote RDS and create a table
 
-### 
+#### Install pre-requisites
+
+```
+$sudo apt-get update && install -y python3-pip postgresql-client awscli 
+# Copy your AWS client ID and Secret to ~/.aws/credentials
+```
+
+#### Setup your RDS table with the required fields
+
+```
+$psql -h prod.xxxxxxx.amazonaws.com -U postgres
+postgres=> CREATE TABLE Tasks (TaskID serial primary key, VIN varchar(17), HoldNumber varchar(255), Description varchar(255), Location varchar(255), Bay varchar(255), DateTime TIMESTAMPTZ, UserName varchar(255), VehicleScan boolean, VehicleScanLink varchar(255), Issue varchar(255));
+postgres=> \d
+                List of relations
+ Schema |       Name       |   Type   |  Owner
+--------+------------------+----------+----------
+ public | tasks            | table    | postgres
+```
+
+#### Run AWS configure to set your region
+
+AWS configure automatically picks up your keys from ~/.aws/credentials. You just need to set the region when it prompts you to.
+For example, we set it here to us-east-1, this is where we had created our RDS database too.
+
+```
+$aws configure
+Default region name [None]:us-east-1
+```
+
+
+
+
