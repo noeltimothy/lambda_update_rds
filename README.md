@@ -83,14 +83,14 @@ $sudo aws configure
 Default region name [None]:us-east-1
 ```
 
-## On your Ubuntu Instance: Create an S3 bucket and copy your CSV file
+## AWSCLI: Create an S3 bucket and copy your CSV file
 
 ```
 $sudo aws mb s3://mytest-bucket
 $sudo aws cp Data.csv s3://mytest-bucket
 ```
 
-## On your Ubuntu Instance: Create your AWS RDS table with the required fields
+## From your Ubuntu Instance: Create your AWS RDS table with the required fields
 
 ```
 $psql -h prod.xxxxxxx.amazonaws.com -U postgres
@@ -105,7 +105,7 @@ postgres=> \d
  public | tasks            | table    | postgres
 ```
 
-## On your Ubuntu Instance: Package & Deploy your Lambda function
+## AWSCLI: Package & Deploy your Lambda function
 
 ```
 $mkdir lambda
