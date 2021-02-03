@@ -69,7 +69,7 @@ We use a local Ubuntu instance to do the following:
 #### Install pre-requisites
 
 ```
-$sudo apt-get update && install -y python3-pip postgresql-client awscli 
+$sudo apt-get update && sudo apt install -y python3-pip postgresql-client awscli 
 # Copy your AWS client ID and Secret to ~/.aws/credentials
 ```
 
